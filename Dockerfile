@@ -18,4 +18,8 @@ RUN \
   make install && \
   rm -rf /usr/local/src/grpc
 
+# Set environment variables
+ENV LD_LIBRARY_PATH /usr/local/lib:${LD_LIBRARY_PATH}
+ENV PKG_CONFIG_PATH /usr/local/lib/pkgconfig:${PKG_CONFIG_PATH}
+
 CMD ["/bin/bash"]
