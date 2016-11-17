@@ -3,7 +3,7 @@ FROM fedora:24
 # Update and install packages
 RUN \
   dnf upgrade -y && \
-  dnf install -y autoconf boost boost-devel clang cmake findutils git libtool make ninja-build ruby which && \
+  dnf install -y autoconf boost boost-devel clang cmake compiler-rt findutils git libtool llvm make ninja-build ruby which && \
   dnf clean all
 
 # Build and install gRPC
