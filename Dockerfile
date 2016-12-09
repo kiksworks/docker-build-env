@@ -1,6 +1,6 @@
 FROM fedora:25
 
-ENV GRPC_RELEASE_TAG v1.0.0
+ENV GRPC_RELEASE_TAG v1.0.1
 
 # Update and install packages
 RUN \
