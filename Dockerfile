@@ -5,7 +5,7 @@ ENV GRPC_RELEASE_TAG v1.0.0
 # Update and install packages
 RUN \
   dnf upgrade -y && \
-  dnf install -y autoconf boost boost-devel clang cmake compiler-rt findutils git libtool llvm make ninja-build ruby which && \
+  dnf install -y autoconf boost boost-devel clang cmake compiler-rt findutils git libtool llvm make ninja-build openssl-devel ruby which && \
   dnf clean all && \
   git clone -b ${GRPC_RELEASE_TAG} --recursive https://github.com/grpc/grpc /usr/local/src/grpc && \
   cd /usr/local/src/grpc && \
