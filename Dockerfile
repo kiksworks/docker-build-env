@@ -9,9 +9,14 @@ RUN \
   dnf upgrade -y && \
   dnf install -y \
     autoconf boost boost-devel clang cmake compiler-rt eigen3 findutils \
-    git libtool llvm make ninja-build openssl-devel ruby which && \
+    git libtool llvm make ninja-build openssl-devel ruby unzip which && \
   dnf clean all && \
   git clone -b ${GRPC_RELEASE_TAG} --recursive https://github.com/grpc/grpc /usr/local/src/grpc && \
+  cd /usr/local/src/grpc/third_party/protobuf && \
+  ./autogen.sh && \
+  ./configure && \
+  make -j"$(nproc)" && \
+  make install && \
   cd /usr/local/src/grpc && \
   make -j"$(nproc)" && \
   make install && \
