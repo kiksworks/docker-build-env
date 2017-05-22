@@ -8,7 +8,7 @@ ENV GRPC_RELEASE_TAG=v1.3.4 \
 RUN \
   dnf upgrade -y && \
   dnf install -y \
-    autoconf boost boost-devel clang cmake compiler-rt eigen3 findutils \
+    autoconf boost boost-devel clang cmake compiler-rt eigen3 file findutils \
     git libtool llvm make ninja-build openssl-devel ruby unzip which && \
   dnf clean all && \
   git clone -b ${GRPC_RELEASE_TAG} --recursive https://github.com/grpc/grpc /usr/local/src/grpc && \
