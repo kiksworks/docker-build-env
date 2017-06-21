@@ -1,6 +1,6 @@
 FROM fedora:25
 
-ENV GRPC_RELEASE_TAG=v1.3.4 \
+ENV GRPC_RELEASE_TAG=v1.3.7 \
     LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH} \
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH}
 
