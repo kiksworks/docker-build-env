@@ -11,7 +11,11 @@ RUN \
     autoconf boost boost-devel clang cmake compiler-rt eigen3 file findutils \
     git libtool llvm make ninja-build openssl-devel ruby unzip which && \
   dnf clean all && \
-  git clone -b ${GRPC_RELEASE_TAG} --recursive https://github.com/grpc/grpc /usr/local/src/grpc && \
+  git clone \
+    --branch ${GRPC_RELEASE_TAG} \
+    --depth 1 \
+    --recursive \
+    https://github.com/grpc/grpc /usr/local/src/grpc && \
   cd /usr/local/src/grpc/third_party/protobuf && \
   ./autogen.sh && \
   ./configure && \
