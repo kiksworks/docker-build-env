@@ -19,11 +19,11 @@ RUN \
   cd /usr/local/src/grpc/third_party/protobuf && \
   ./autogen.sh && \
   ./configure && \
-  make -j"${nproc}" && \
+  make -j$(nproc) && \
   make install && \
   cd /usr/local/src/grpc && \
   CPPFLAGS="-Wno-error=implicit-fallthrough -Wno-error=conversion" \
-     make -j"${nproc}" && \
+     make -j$(nproc) && \
   make install && \
   rm -rf /usr/local/src/grpc
 
