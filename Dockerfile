@@ -1,4 +1,4 @@
-FROM fedora:26
+FROM fedora:27
 
 ENV GRPC_RELEASE_TAG=v1.7.2 \
     LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH} \
