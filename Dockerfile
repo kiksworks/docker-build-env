@@ -8,8 +8,8 @@ ENV GRPC_RELEASE_TAG=v1.7.2 \
 RUN \
   dnf upgrade -y && \
   dnf install -y \
-    autoconf boost boost-devel clang cmake compiler-rt eigen3 file findutils \
-    git libtool llvm make ninja-build ruby unzip which zlib-devel && \
+    autoconf boost boost-devel clang cmake compiler-rt curl eigen3 file findutils \
+    git libtool llvm make ninja-build unzip which zlib-devel && \
   dnf clean all && \
   git clone \
     --branch "${GRPC_RELEASE_TAG}" \
