@@ -1,6 +1,6 @@
 FROM fedora:27
 
-ENV GRPC_RELEASE_TAG=v1.7.2 \
+ENV GRPC_VERSION=1.7.3 \
     LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH} \
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH}
 
@@ -13,7 +13,7 @@ RUN \
   dnf clean all && \
   # Clone gRPC repository \
   git clone \
-    --branch "${GRPC_RELEASE_TAG}" \
+    --branch "v${GRPC_VERSION}" \
     --depth 1 \
     --recursive \
     https://github.com/grpc/grpc /usr/local/src/grpc && \
@@ -28,6 +28,9 @@ RUN \
   CPPFLAGS="-Wno-error=implicit-fallthrough -Wno-error=conversion" \
      make -j$(nproc) && \
   make install && \
-  rm -rf /usr/local/src/grpc
+  rm -rf /usr/local/src/grpc && \
+  # Workaround \
+  cd /usr/local/lib && \
+  ln -s "libgrpc++.so.${GRPC_VERSION}" libgrpc++.so.1
 
 CMD ["/bin/bash"]
