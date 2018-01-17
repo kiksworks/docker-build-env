@@ -9,7 +9,7 @@ RUN \
   dnf upgrade -y && \
   dnf install -y \
     autoconf boost boost-devel clang cmake compiler-rt curl eigen3 file findutils \
-    git libtool llvm make ninja-build unzip which yaml-cpp-devel zlib-devel && \
+    git libtool libyaml-devel llvm make ninja-build unzip which zlib-devel && \
   dnf clean all && \
   # Clone gRPC repository \
   git clone \
