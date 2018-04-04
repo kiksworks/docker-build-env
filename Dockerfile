@@ -1,6 +1,6 @@
 FROM fedora:27
 
-ENV GRPC_VERSION=1.8.3 \
+ENV GRPC_VERSION=1.10.0 \
     LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH} \
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH}
 
@@ -25,8 +25,7 @@ RUN \
   make install && \
   # Build and install gRPC \
   cd /usr/local/src/grpc && \
-  CPPFLAGS="-Wno-error=implicit-fallthrough -Wno-error=conversion" \
-     make -j$(nproc) && \
+  make -j$(nproc) && \
   make install && \
   rm -rf /usr/local/src/grpc && \
   # Workaround \
