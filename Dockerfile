@@ -8,8 +8,8 @@ RUN \
   # Update and install packages \
   dnf upgrade -y && \
   dnf install -y \
-    autoconf boost boost-devel clang cmake compiler-rt curl eigen3 file findutils \
-    git libtool libyaml-devel llvm make ninja-build unzip which zlib-devel && \
+    autoconf boost-devel clang cmake compiler-rt curl eigen3 file findutils git \
+    libtool libyaml-devel lld make ninja-build openssl-devel unzip which zlib-devel && \
   dnf clean all && \
   # Clone gRPC repository \
   git clone \
