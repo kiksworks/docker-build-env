@@ -15,8 +15,11 @@ RUN \
   git clone \
     --branch "v${GRPC_VERSION}" \
     --depth 1 \
-    --recursive \
     https://github.com/grpc/grpc /usr/local/src/grpc && \
+  cd /usr/local/src/grpc && \
+  git submodule update --init \
+    third_party/cares/cares \
+    third_party/protobuf && \
   # Build and install protobuf \
   cd /usr/local/src/grpc/third_party/protobuf && \
   ./autogen.sh && \
