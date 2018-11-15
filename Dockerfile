@@ -1,4 +1,4 @@
-FROM fedora:27
+FROM fedora:29
 
 ENV GRPC_VERSION=1.17.0 \
     LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH} \
@@ -25,7 +25,7 @@ RUN \
   make install && \
   # Build and install gRPC \
   cd /usr/local/src/grpc && \
-  make -j$(nproc) && \
+  CPPFLAGS="-w" make -j$(nproc) && \
   make install && \
   rm -rf /usr/local/src/grpc
 
