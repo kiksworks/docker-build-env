@@ -1,6 +1,6 @@
 FROM fedora:27
 
-ENV GRPC_VERSION=1.10.0 \
+ENV GRPC_VERSION=1.17.0 \
     LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH} \
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH}
 
@@ -27,9 +27,6 @@ RUN \
   cd /usr/local/src/grpc && \
   make -j$(nproc) && \
   make install && \
-  rm -rf /usr/local/src/grpc && \
-  # Workaround \
-  cd /usr/local/lib && \
-  ln -s "libgrpc++.so.${GRPC_VERSION}" libgrpc++.so.1
+  rm -rf /usr/local/src/grpc
 
 CMD ["/bin/bash"]
