@@ -1,6 +1,6 @@
 FROM fedora:29
 
-ARG GRPC_VERSION=1.17.0
+ARG GRPC_VERSION=1.18.0
 
 ENV LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH} \
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH}
