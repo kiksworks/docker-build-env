@@ -1,4 +1,4 @@
-FROM fedora:29
+FROM fedora:30
 
 ARG GRPC_VERSION=1.18.0
 
