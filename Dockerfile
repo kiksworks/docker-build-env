@@ -1,4 +1,4 @@
-FROM fedora:30
+FROM fedora:31
 
 ARG GRPC_VERSION=1.18.0
 
@@ -9,7 +9,7 @@ RUN \
   # Update and install packages \
   dnf upgrade -y && \
   dnf install -y \
-    autoconf boost-devel clang cmake compiler-rt curl eigen3 file findutils git \
+    autoconf boost-devel clang cmake compiler-rt curl diffutils eigen3 file findutils git \
     libtool libyaml-devel lld llvm make ninja-build openssl-devel unzip which \
     zlib-devel && \
   dnf clean all && \
