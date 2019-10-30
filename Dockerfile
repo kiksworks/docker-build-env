@@ -1,6 +1,6 @@
-FROM fedora:29
+FROM fedora:31
 
-ARG GRPC_VERSION=1.18.0
+ARG GRPC_VERSION=1.24.3
 
 ENV LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH} \
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH}
@@ -9,7 +9,7 @@ RUN \
   # Update and install packages \
   dnf upgrade -y && \
   dnf install -y \
-    autoconf boost-devel clang cmake compiler-rt curl eigen3 file findutils git \
+    autoconf boost-devel clang cmake compiler-rt curl diffutils eigen3 file findutils git \
     gtkmm30-devel libtool libyaml-devel lld llvm make ninja-build openssl-devel \
     unzip which zlib-devel && \
   dnf clean all && \
@@ -21,7 +21,8 @@ RUN \
   cd /usr/local/src/grpc && \
   git submodule update --init \
     third_party/cares/cares \
-    third_party/protobuf && \
+    third_party/protobuf \
+    third_party/upb && \
   # Build and install protobuf \
   cd /usr/local/src/grpc/third_party/protobuf && \
   ./autogen.sh && \
