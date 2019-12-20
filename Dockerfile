@@ -10,7 +10,8 @@ RUN \
   dnf upgrade -y && \
   dnf install -y \
     autoconf boost-devel clang cmake compiler-rt curl diffutils eigen3 file findutils git \
-    gtkmm30-devel libtool libyaml-devel lld llvm make ninja-build openssl-devel \
+    gtkmm30-devel libarchive-devel libtool libyaml-devel lld llvm make ninja-build openssl-devel \
+    python3-mako python3-pyyaml python3-six python3-wheel \
     unzip which zlib-devel && \
   dnf clean all && \
   # Clone gRPC repository \
