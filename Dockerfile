@@ -1,6 +1,7 @@
 FROM fedora:31
 
 ARG GRPC_VERSION=1.24.3
+ARG NNABLA_VERSION=1.4.0
 
 ENV LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH} \
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH}
@@ -34,6 +35,16 @@ RUN \
   cd /usr/local/src/grpc && \
   CPPFLAGS="-w" make -j$(nproc) && \
   make install && \
-  rm -rf /usr/local/src/grpc
+  # Build NNabla \
+  git clone \
+    --branch "v${NNABLA_VERSION}" \
+    --depth 1 \
+    https://github.com/sony/nnabla.git /usr/local/src/nnabla && \
+  mkdir -p /usr/local/src/nnabla/build && \
+  cd /usr/local/src/nnabla/build && \
+  cmake .. -DBUILD_PYTHON_PACKAGE=OFF -DPYTHON_COMMAND_NAME=python3 -DBUILD_CPP_UTILS=ON && \
+  make -j$(nproc) && \
+  make install && \
+  rm -rf /usr/local/src/grpc /usr/local/src/nnabla
 
 CMD ["/bin/bash"]
