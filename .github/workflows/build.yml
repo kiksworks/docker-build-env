@@ -1,0 +1,28 @@
+name: Build
+on:
+  push:
+    branches: [master]
+  schedule:
+    - cron: 0 0 1 * *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: kiks/build-env
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: docker build --pull -t $IMAGE_NAME:latest .
+
+      - run: docker login -u "$DOCKERHUB_USER" --password-stdin <<< "$DOCKERHUB_PASSWORD"
+        env:
+          DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - run: |
+          tag=$(date -u +%Y%m%d)
+          docker tag $IMAGE_NAME:latest $IMAGE_NAME:$tag
+          docker push $IMAGE_NAME:latest
+          docker push $IMAGE_NAME:$tag
