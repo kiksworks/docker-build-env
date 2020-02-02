@@ -21,8 +21,11 @@ jobs:
           DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - run: |
+      - name: Push container images
+        run: |
           tag=$(date -u +%Y%m%d)
           docker tag $IMAGE_NAME:latest $IMAGE_NAME:$tag
           docker push $IMAGE_NAME:latest
           docker push $IMAGE_NAME:$tag
+
+      - run: rm -rf ~/.docker
