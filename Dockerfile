@@ -1,6 +1,6 @@
 FROM fedora:31
 
-ARG GRPC_VERSION=1.24.3
+ARG GRPC_VERSION=1.27.2
 ARG NNABLA_VERSION=1.4.0
 
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
@@ -23,6 +23,7 @@ RUN \
     https://github.com/grpc/grpc /usr/local/src/grpc && \
   cd /usr/local/src/grpc && \
   git submodule update --init \
+    third_party/abseil-cpp \
     third_party/cares/cares \
     third_party/protobuf \
     third_party/upb && \
