@@ -9,10 +9,10 @@ RUN \
   # Update and install packages \
   dnf upgrade -y && \
   dnf install -y \
-    autoconf boost-devel clang cmake compiler-rt curl diffutils eigen3 file \
-    findutils git gtkmm30-devel libarchive-devel libasan libtool libyaml-devel lld \
-    llvm make ninja-build openssl-devel python3-mako python3-pyyaml python3-six \
-    unzip which zlib-devel && \
+    boost-devel clang cmake compiler-rt curl diffutils eigen3 file findutils git \
+    gtkmm30-devel libarchive-devel libasan libtool libyaml-devel llvm make \
+    ninja-build openssl-devel protobuf-devel python3-mako python3-pyyaml \
+    python3-six unzip which zlib-devel && \
   dnf clean all && \
   # Set LD_LIBRARY_PATH temporally
   export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH && \
@@ -25,16 +25,10 @@ RUN \
   git submodule update --init \
     third_party/abseil-cpp \
     third_party/cares/cares \
-    third_party/protobuf \
     third_party/upb && \
-  # Build and install protobuf \
-  cd /usr/local/src/grpc/third_party/protobuf && \
-  ./autogen.sh && \
-  ./configure && \
-  make -j$(nproc) && \
-  make install && \
   # Build and install gRPC \
-  cd /usr/local/src/grpc && \
+  sed -i -e 's!-Ithird_party/protobuf/src\s!!g' Makefile && \
+  sed -i -e 's/\(options\.case_insensitive_enum_parsing =\)/\/\/ \1/g' src/cpp/server/channelz/channelz_service.cc && \
   CPPFLAGS="-w" make -j$(nproc) && \
   make install && \
   # Build NNabla \
