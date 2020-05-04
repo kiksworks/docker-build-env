@@ -1,7 +1,7 @@
 FROM fedora:31
 
-ARG GRPC_VERSION=1.27.2
-ARG NNABLA_VERSION=1.4.0
+ARG GRPC_VERSION=1.28.1
+ARG NNABLA_VERSION=1.7.0
 
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 
@@ -43,10 +43,13 @@ RUN \
     --depth 1 \
     https://github.com/sony/nnabla.git /usr/local/src/nnabla && \
   mkdir -p /usr/local/src/nnabla/build && \
+  cd /usr/local/src/nnabla && \
+  (curl -L https://gist.githubusercontent.com/Tosainu/bfd73569f433e1887f5eccd6e43af908/raw/42e3d3535528c6432e3560430d7359dd16f90111/use-correct-variables.patch | \
+    git apply -) && \
   cd /usr/local/src/nnabla/build && \
-  cmake .. -DBUILD_PYTHON_PACKAGE=OFF -DPYTHON_COMMAND_NAME=python3 -DBUILD_CPP_UTILS=ON && \
-  make -j$(nproc) && \
-  make install && \
+  cmake .. -G Ninja -DBUILD_PYTHON_PACKAGE=OFF -DPYTHON_COMMAND_NAME=python3 -DBUILD_CPP_UTILS=ON && \
+  ninja  && \
+  ninja install && \
   rm -rf /usr/local/src/grpc /usr/local/src/nnabla && \
   # Configure library dir \
   echo "/usr/local/lib" > /etc/ld.so.conf.d/local-lib.conf && \
