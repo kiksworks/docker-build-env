@@ -1,6 +1,5 @@
 FROM fedora:31
 
-ARG GRPC_VERSION=1.28.1
 ARG NNABLA_VERSION=1.7.0
 
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
@@ -11,26 +10,11 @@ RUN \
   dnf install -y \
     boost-devel clang cmake compiler-rt curl diffutils eigen3 file findutils git \
     gtkmm30-devel libarchive-devel libasan libtool libyaml-devel llvm make \
-    ninja-build openssl-devel protobuf-devel python3-mako python3-pyyaml \
-    python3-six unzip which zlib-devel && \
+    ninja-build protobuf-devel python3-mako python3-pyyaml python3-six unzip which \
+    zlib-devel && \
   dnf clean all && \
   # Set LD_LIBRARY_PATH temporally
   export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH && \
-  # Clone gRPC repository \
-  git clone \
-    --branch "v${GRPC_VERSION}" \
-    --depth 1 \
-    https://github.com/grpc/grpc /usr/local/src/grpc && \
-  cd /usr/local/src/grpc && \
-  git submodule update --init \
-    third_party/abseil-cpp \
-    third_party/cares/cares \
-    third_party/upb && \
-  # Build and install gRPC \
-  sed -i -e 's!-Ithird_party/protobuf/src\s!!g' Makefile && \
-  sed -i -e 's/\(options\.case_insensitive_enum_parsing =\)/\/\/ \1/g' src/cpp/server/channelz/channelz_service.cc && \
-  CPPFLAGS="-w" make -j$(nproc) && \
-  make install && \
   # Build NNabla \
   git clone \
     --branch "v${NNABLA_VERSION}" \
