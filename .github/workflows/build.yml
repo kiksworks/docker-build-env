@@ -8,13 +8,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        dockerfile: [build-env, simplecheck-env]
     env:
-      IMAGE_NAME: docker.pkg.github.com/kiksworks/docker-build-env/build-env
+      DOCKERFILE_DIR: ${{ matrix.dockerfile }}
+      IMAGE_NAME: docker.pkg.github.com/kiksworks/docker-build-env/${{ matrix.dockerfile }}
 
     steps:
       - uses: actions/checkout@v2
 
-      - run: docker build --pull -t $IMAGE_NAME:latest .
+      - run: docker build --pull -t $IMAGE_NAME:latest $DOCKERFILE_DIR
 
       - name: Push container images
         env:
