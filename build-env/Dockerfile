@@ -1,4 +1,4 @@
-FROM fedora:31
+FROM ubuntu:20.04
 
 ARG NNABLA_VERSION=1.7.0
 
@@ -6,13 +6,24 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 
 RUN \
   # Update and install packages \
-  dnf upgrade -y && \
-  dnf install -y \
-    boost-devel clang cmake compiler-rt curl diffutils eigen3 file findutils git \
-    gtkmm30-devel libarchive-devel libasan libtool libyaml-devel llvm make \
-    ninja-build protobuf-devel python3-mako python3-pyyaml python3-six unzip which \
-    zlib-devel && \
-  dnf clean all && \
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+    ca-certificates clang cmake curl findutils g++ gcc git libarchive-dev \
+    libc-dev libeigen3-dev libgtkmm-3.0-dev libprotobuf-dev libyaml-dev llvm \
+    ninja-build openssh-client patchutils protobuf-compiler python3 \
+    python3-mako python3-six python3-yaml \
+    # libboost-mpi は依存が大きいので除く (libboost-all-dev を使わない) \
+    libboost-atomic-dev libboost-chrono-dev libboost-container-dev \
+    libboost-context-dev libboost-coroutine-dev libboost-date-time-dev \
+    libboost-dev libboost-exception-dev libboost-fiber-dev \
+    libboost-filesystem-dev libboost-graph-dev libboost-graph-parallel-dev \
+    libboost-iostreams-dev libboost-locale-dev libboost-log-dev \
+    libboost-math-dev libboost-numpy-dev libboost-program-options-dev \
+    libboost-python-dev libboost-random-dev libboost-regex-dev \
+    libboost-serialization-dev libboost-stacktrace-dev libboost-system-dev \
+    libboost-test-dev libboost-thread-dev libboost-timer-dev libboost-tools-dev \
+    libboost-type-erasure-dev libboost-wave-dev && \
+  rm -rf /var/lib/apt/lists/* && \
   # Set LD_LIBRARY_PATH temporally
   export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH && \
   # Build NNabla \
