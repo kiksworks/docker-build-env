@@ -2,8 +2,6 @@ FROM ubuntu:20.04
 
 ARG NNABLA_VERSION=1.7.0
 
-ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
-
 RUN \
   # Update and install packages \
   apt-get update && \
@@ -24,8 +22,6 @@ RUN \
     libboost-test-dev libboost-thread-dev libboost-timer-dev libboost-tools-dev \
     libboost-type-erasure-dev libboost-wave-dev && \
   rm -rf /var/lib/apt/lists/* && \
-  # Set LD_LIBRARY_PATH temporally
-  export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH && \
   # Build NNabla \
   git clone \
     --branch "v${NNABLA_VERSION}" \
@@ -39,7 +35,4 @@ RUN \
   cmake .. -G Ninja -DBUILD_PYTHON_PACKAGE=OFF -DPYTHON_COMMAND_NAME=python3 -DBUILD_CPP_UTILS=ON && \
   ninja  && \
   ninja install && \
-  rm -rf /usr/local/src/grpc /usr/local/src/nnabla && \
-  # Configure library dir \
-  echo "/usr/local/lib" > /etc/ld.so.conf.d/local-lib.conf && \
-  ldconfig -v
+  rm -rf /usr/local/src/nnabla
