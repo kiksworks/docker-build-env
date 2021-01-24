@@ -2,6 +2,9 @@ name: Build
 on:
   push:
     branches: [master]
+    paths:
+      - ".github/workflows/build.yml"
+      - "**/Dockerfile"
   schedule:
     - cron: 0 0 1 * *
 
@@ -11,7 +14,10 @@ jobs:
 
     strategy:
       matrix:
-        dockerfile: [build-env, simplecheck-env]
+        dockerfile:
+          - build-env
+          - simplecheck-env
+
     env:
       DOCKERFILE_DIR: ${{ matrix.dockerfile }}
       IMAGE_NAME: docker.pkg.github.com/kiksworks/docker-build-env/${{ matrix.dockerfile }}
@@ -23,7 +29,7 @@ jobs:
 
       - name: Push container images
         env:
-          USERNAME: $GITHUB_ACTOR
+          USERNAME: ${{ github.actor }}
           PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         run: |
           docker login docker.pkg.github.com -u "$USERNAME" --password-stdin <<< "$PASSWORD"
