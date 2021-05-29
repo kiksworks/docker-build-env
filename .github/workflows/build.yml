@@ -23,9 +23,11 @@ jobs:
       IMAGE_NAME: docker.pkg.github.com/kiksworks/docker-build-env/${{ matrix.dockerfile }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@main
 
       - run: docker build --pull -t $IMAGE_NAME:latest $DOCKERFILE_DIR
+        env:
+          DOCKER_BUILDKIT: "1"
 
       - name: Push container images
         env:
