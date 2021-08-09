@@ -20,25 +20,27 @@ jobs:
 
     env:
       DOCKERFILE_DIR: ${{ matrix.dockerfile }}
-      IMAGE_NAME: docker.pkg.github.com/kiksworks/docker-build-env/${{ matrix.dockerfile }}
+      IMAGE_NAME: kiksworks/${{ matrix.dockerfile }}
 
     steps:
       - uses: actions/checkout@main
 
-      - run: docker build --pull -t $IMAGE_NAME:latest $DOCKERFILE_DIR
+      - run: docker build --pull -t "$IMAGE_NAME" "$DOCKERFILE_DIR"
         env:
           DOCKER_BUILDKIT: "1"
 
       - name: Push container images
         env:
+          REGISTRY: ghcr.io
           USERNAME: ${{ github.actor }}
           PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          docker login docker.pkg.github.com -u "$USERNAME" --password-stdin <<< "$PASSWORD"
+          docker login "$REGISTRY" -u "$USERNAME" --password-stdin <<< "$PASSWORD"
 
           tag=$(date -u +%Y%m%d)
-          docker tag $IMAGE_NAME:latest $IMAGE_NAME:$tag
-          docker push $IMAGE_NAME:latest
-          docker push $IMAGE_NAME:$tag
+          docker tag "$IMAGE_NAME" "$REGISTRY/$IMAGE_NAME:$tag"
+          docker push "$REGISTRY/$IMAGE_NAME:$tag"
+          docker tag "$IMAGE_NAME" "$REGISTRY/$IMAGE_NAME:latest"
+          docker push "$REGISTRY/$IMAGE_NAME:latest"
 
           rm -rf ~/.docker
