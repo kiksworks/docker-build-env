@@ -7,7 +7,7 @@ RUN --mount=type=bind,target=/nnabla.patch,source=nnabla-v1.11.0.patch \
   # Update and install packages \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-    ca-certificates clang cmake curl findutils g++ gcc git libarchive-dev \
+    ca-certificates clang cmake curl findutils g++ gcc git gpg gpgv libarchive-dev \
     libc-dev libeigen3-dev libgtkmm-3.0-dev libhdf5-dev libprotobuf-dev libyaml-dev \
     llvm ninja-build openssh-client patchutils protobuf-compiler \
     python3 python3-mako python3-six python3-yaml \
