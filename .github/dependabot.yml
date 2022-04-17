@@ -21,3 +21,8 @@ updates:
       day: wednesday
       time: "09:00"
       timezone: Asia/Tokyo
+    ignore:
+      - dependency-name: alpine
+        versions:
+          - "<3.13.0"
+          - ">=3.14.0"
