@@ -16,6 +16,10 @@ jobs:
           - build-env
           - simplecheck-env
 
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-${{ matrix.context }}
+      cancel-in-progress: true
+
     steps:
       - uses: actions/checkout@v3.5.2
         with:
