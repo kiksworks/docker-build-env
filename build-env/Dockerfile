@@ -1,4 +1,4 @@
-FROM ubuntu:focal@sha256:24a0df437301598d1a4b62ddf59fa0ed2969150d70d748c84225e6501e9c36b9
+FROM ubuntu:jammy@sha256:67211c14fa74f070d27cc59d69a7fa9aeff8e28ea118ef3babc295a0428a6d21
 
 ARG NNABLA_VERSION=1.11.0
 ARG NNABLA_SHA256=adadfc7dd561efe3a533189f377939c05a182aad8740dd793c713aac723111e1
@@ -24,15 +24,11 @@ RUN --mount=type=bind,target=/nnabla.patch,source=nnabla-v1.11.0.patch \
     libboost-type-erasure-dev libboost-wave-dev && \
   rm -rf /var/lib/apt/lists/* && \
   # Build NNabla \
-  curl -L https://github.com/sony/nnabla/archive/v${NNABLA_VERSION}.tar.gz -o /nnabla.tar.gz && \
-  echo "${NNABLA_SHA256} /nnabla.tar.gz" | sha256sum -c - && \
-  mkdir -p /usr/local/src/nnabla && \
-  tar xf /nnabla.tar.gz --strip-components=1 -C /usr/local/src/nnabla && \
-  cd /usr/local/src/nnabla && \
-  patch -p1 < /nnabla.patch && \
-  cmake -S . -B build -G Ninja -DBUILD_PYTHON_PACKAGE=OFF -DPYTHON_COMMAND_NAME=python3 -DBUILD_CPP_UTILS=ON -DNNABLA_UTILS_WITH_HDF5=ON && \
-  cd /usr/local/src/nnabla/build && \
-  ninja  && \
-  ninja install && \
-  cd / && \
-  rm -rf /nnabla.tar.gz /usr/local/src/nnabla
+  curl -L https://github.com/sony/nnabla/archive/v${NNABLA_VERSION}.tar.gz -o /tmp/nnabla.tar.gz && \
+  echo "${NNABLA_SHA256} /tmp/nnabla.tar.gz" | sha256sum -c - && \
+  mkdir -p /tmp/nnabla-src && \
+  tar xf /tmp/nnabla.tar.gz --strip-components=1 -C /tmp/nnabla-src && \
+  patch -d /tmp/nnabla-src -Np1 < /nnabla.patch && \
+  cmake -S /tmp/nnabla-src -B /tmp/nnabla-build -G Ninja -D CMAKE_BUILD_TYPE=Release -D BUILD_PYTHON_PACKAGE=OFF -D PYTHON_COMMAND_NAME=python3 -D BUILD_CPP_UTILS=ON -D NNABLA_UTILS_WITH_HDF5=ON && \
+  cmake --build /tmp/nnabla-build -- install && \
+  rm -rf /tmp/nnabla.tar.gz /tmp/nnabla-src /tmp/nnabla-build
