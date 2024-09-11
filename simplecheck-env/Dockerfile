@@ -1,3 +1,3 @@
-FROM alpine:3.17.9@sha256:ef813b2faa3dd1a37f9ef6ca98347b72cd0f55e4ab29fb90946f1b853bf032d9
+FROM alpine:3.17.10@sha256:3451da08fc6ef554a100da3e2df5ac6d598c82f2a774d5f6ed465c3d80cd163a
 
 RUN apk add --no-cache bash clang14 file git grep sed
